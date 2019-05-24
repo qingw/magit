@@ -1201,15 +1201,13 @@ Do not add this to a hook variable."
   (let ((start 0))
     (when (string-match "^\\(squash\\|fixup\\)! " msg start)
       (setq start (match-end 0))
-      (put-text-property (match-beginning 0)
-                         (match-end 0)
-                         'font-lock-face 'magit-keyword-squash msg))
+      (magit--put-face (match-beginning 0) (match-end 0)
+                       'magit-keyword-squash msg))
     (while (string-match "\\[[^[]*\\]" msg start)
       (setq start (match-end 0))
       (when magit-log-highlight-keywords
-        (put-text-property (match-beginning 0)
-                           (match-end 0)
-                           'font-lock-face 'magit-keyword msg))))
+        (magit--put-face (match-beginning 0) (match-end 0)
+                         'magit-keyword msg))))
   msg)
 
 (defun magit-log-maybe-show-more-commits (section)
@@ -1317,13 +1315,14 @@ The shortstat style is experimental and rather slow."
                        (symbol-value option))))
         (magit-make-margin-overlay
          (concat (and details
-                      (concat (propertize (truncate-string-to-width
-                                           (or author "")
-                                           details-width
-                                           nil ?\s (make-string 1 magit-ellipsis))
-                                          'font-lock-face 'magit-log-author)
+                      (concat (magit--propertize-face
+                               (truncate-string-to-width
+                                (or author "")
+                                details-width
+                                nil ?\s (make-string 1 magit-ellipsis))
+                               'magit-log-author)
                               " "))
-                 (propertize
+                 (magit--propertize-face
                   (if (stringp style)
                       (format-time-string
                        style
@@ -1333,7 +1332,7 @@ The shortstat style is experimental and rather slow."
                       (format (format (if abbr "%%2i%%-%ic" "%%2i %%-%is")
                                       (- width (if details (1+ details-width) 0)))
                               cnt unit)))
-                  'font-lock-face 'magit-log-date)))))))
+                  'magit-log-date)))))))
 
 (defun magit-log-format-shortstat-margin (rev)
   (magit-make-margin-overlay
@@ -1347,12 +1346,12 @@ The shortstat style is experimental and rather slow."
              (format
               "%5s %5s%4s"
               (if add
-                  (propertize (format "%s+" add)
-                              'font-lock-face 'magit-diffstat-added)
+                  (magit--propertize-face (format "%s+" add)
+                                          'magit-diffstat-added)
                 "")
               (if del
-                  (propertize (format "%s-" del)
-                              'font-lock-face 'magit-diffstat-removed)
+                  (magit--propertize-face (format "%s-" del)
+                                          'magit-diffstat-removed)
                 "")
               files))
          "")

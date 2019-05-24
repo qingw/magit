@@ -257,9 +257,8 @@ Delete the symbolic-ref \"refs/remotes/<remote>/HEAD\"."
   [:description
    (lambda ()
      (concat
-      (propertize "Configure " 'font-lock-face 'transient-heading)
-      (propertize (oref transient--prefix scope)
-                  'font-lock-face 'magit-branch-remote)))
+      (propertize "Configure " 'face 'transient-heading)
+      (propertize (oref transient--prefix scope) 'face 'magit-branch-remote)))
    ("u" magit-remote.<remote>.url)
    ("U" magit-remote.<remote>.fetch)
    ("s" magit-remote.<remote>.pushurl)
@@ -317,10 +316,11 @@ Delete the symbolic-ref \"refs/remotes/<remote>/HEAD\"."
 (defun magit--push-remote-variable (&optional branch short)
   (unless branch
     (setq branch (magit-get-current-branch)))
-  (propertize (if (or (not branch) magit-prefer-push-default)
-                  (if short "pushDefault" "remote.pushDefault")
-                (if short "pushRemote" (format "branch.%s.pushRemote" branch)))
-              'font-lock-face 'bold))
+  (magit--propertize-face
+   (if (or (not branch) magit-prefer-push-default)
+       (if short "pushDefault" "remote.pushDefault")
+     (if short "pushRemote" (format "branch.%s.pushRemote" branch)))
+   'bold))
 
 (defun magit--select-push-remote (prompt-suffix)
   (let* ((branch (or (magit-get-current-branch)

@@ -511,10 +511,9 @@ This discards all changes made since the sequence started."
    (5 "-r" "Rebase merges" "--rebase-merges=" magit-rebase-merges-select-mode)]
   [:if-not magit-rebase-in-progress-p
    :description (lambda ()
-                  (format (propertize "Rebase %s onto"
-                                      'font-lock-face 'transient-heading)
+                  (format (propertize "Rebase %s onto" 'face 'transient-heading)
                           (propertize (or (magit-get-current-branch) "HEAD")
-                                      'font-lock-face 'magit-branch-local)))
+                                      'face 'magit-branch-local)))
    ("p" magit-rebase-onto-pushremote)
    ("u" magit-rebase-onto-upstream)
    ("e" "elsewhere" magit-rebase-branch)]
@@ -585,7 +584,7 @@ the upstream."
     (or (magit-get-upstream-branch branch)
         (let ((remote (magit-get "branch" branch "remote"))
               (merge  (magit-get "branch" branch "merge"))
-              (u (propertize "@{upstream}" 'font-lock-face 'bold)))
+              (u (magit--propertize-face "@{upstream}" 'bold)))
           (cond
            ((magit--unnamed-upstream-p remote merge)
             (concat u ", replacing unnamed"))

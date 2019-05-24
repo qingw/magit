@@ -149,16 +149,15 @@ and also setting this variable to t will lead to tears."
     (replace-regexp-in-string
      "\\[--[^]]+\\]"
      (lambda (match)
-       (format (propertize "[%s]" 'font-lock-face 'transient-inactive-argument)
+       (format (propertize "[%s]" 'face 'transient-inactive-argument)
                (mapconcat (lambda (arg)
-                            (propertize arg 'font-lock-face
+                            (propertize arg 'face
                                         (if (member arg value)
                                             'transient-argument
                                           'transient-inactive-argument)))
                           (save-match-data
                             (split-string (substring match 1 -1) "|"))
-                          (propertize "|" 'font-lock-face
-                                      'transient-inactive-argument))))
+                          (propertize "|" 'face 'transient-inactive-argument))))
      (cl-call-next-method obj))))
 
 ;;;###autoload (autoload 'magit-submodule-add "magit-submodule" nil t)

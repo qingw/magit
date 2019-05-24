@@ -838,6 +838,13 @@ it aligns with the text area."
                     (eq face current))
              return nil))
 
+(defun magit--propertize-face (string face)
+  (propertize string 'face face 'font-lock-face face))
+
+(defun magit--put-face (beg end face string)
+  (put-text-property beg end 'face face string)
+  (put-text-property beg end 'font-lock-face face string))
+
 (defun magit--format-spec (format specification)
   "Like `format-spec' but preserve text properties in SPECIFICATION."
   (with-temp-buffer
